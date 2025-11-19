@@ -1,77 +1,78 @@
 import numpy as np
 import pickle
 import faiss
-from sentence_transformers import SentenceTransformer
 
 from OceanParkBot.src.config.path import (
-    DATA_VECTOR,
-    DATA_DIR,
     path_from_data
 )
 
+# Load PhoBERT embedder (đã sửa trong embed_model.py)
+from OceanParkBot.src.embedding.embed_model import load_embedding_model
+
 
 class SemanticSearch:
-    def __init__(self, embedding_model_path=None, faiss_index_path=None, metadata_path=None):
+    def __init__(self, faiss_index_path=None, metadata_path=None):
         """
-        embedding_model_path: tên model SBERT
-        faiss_index_path: đường dẫn tới faiss_index.bin
-        metadata_path: pickle chứa metadata
+        Semantic Search sử dụng PhoBERT embedding + FAISS (dim = 768)
         """
 
-        # 1. Load SBERT embedding model
-        model_name = embedding_model_path or "sentence-transformers/all-MiniLM-L6-v2"
-        self.model = SentenceTransformer(model_name)
+        # ==== 1) Load PhoBERT model ====
+        print(">>> Loading PhoBERT embedder...")
+        self.model = load_embedding_model()     # PhoBERTEmbedder()
 
-        # 2. Đường dẫn FAISS index
+        # ==== 2) FAISS paths ====
         if faiss_index_path is None:
             faiss_index_path = path_from_data("faiss_index.bin")
 
-        # 3. Đường dẫn metadata
         if metadata_path is None:
             metadata_path = path_from_data("faiss_index.bin_meta.pkl")
 
-        # Load FAISS index
-        print(">>> Loading FAISS index from:", faiss_index_path)
+        # ==== 3) Load FAISS index ====
+        print(">>> Loading FAISS index:", faiss_index_path)
         self.index = faiss.read_index(faiss_index_path)
 
-        # Load metadata
-        print(">>> Loading metadata from:", metadata_path)
+        # ==== 4) Load metadata ====
+        print(">>> Loading metadata:", metadata_path)
         with open(metadata_path, "rb") as f:
             self.metadata = pickle.load(f)
 
     def encode_query(self, text: str):
-        """Embedding câu hỏi user"""
-        return np.array(self.model.encode([text])[0]).astype("float32")
+        """
+        Encode text bằng PhoBERT → vector numpy (float32, shape 768)
+        """
+        vec = self.model.encode(text)
+        return vec.astype("float32")
 
     def search(self, text: str, top_k=10):
         """
-        Trả về top-k căn hộ giống nhất theo FAISS
+        Trả về top-k căn hộ gần nghĩa nhất
         """
+
+        # ==== 1) Encode ====
         query_vec = self.encode_query(text)
 
-        # Search trong FAISS
-        distances, indices = self.index.search(
-            np.array([query_vec]),
-            top_k
-        )
+        # FAISS yêu cầu shape = (1, dim)
+        query_vec = np.array([query_vec], dtype="float32")
+
+        # ==== 2) Search ====
+        distances, indices = self.index.search(query_vec, top_k)
 
         results = []
         for idx, dist in zip(indices[0], distances[0]):
             if idx < 0:
                 continue
 
-            meta = dict(self.metadata[idx])  # copy để không ghi đè
-            meta["score"] = float(dist)
-            results.append(meta)
+            item = dict(self.metadata[idx])
+            item["score"] = float(dist)
+            results.append(item)
 
         return results
 
 
 if __name__ == "__main__":
-    searcher = SemanticSearch()
+    search = SemanticSearch()
+    q = "tìm căn 2 ngủ view vinuni dưới 9tr"
+    res = search.search(q, top_k=5)
 
-    q = "tìm căn 2 ngủ full đồ dưới 10tr view VinUni"
-    results = searcher.search(q, top_k=5)
-
-    for item in results:
-        print(item.get("ms"), item.get("price"), item.get("text_for_embedding", "")[:60], "score:", item["score"])
+    for r in res:
+        print(r["ms"], r["price"], r["score"])

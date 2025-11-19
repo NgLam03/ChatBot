@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 from .embed_model import load_embedding_model
-from OceanParkBot.src.config.path import DATA_CLEANED, DATA_VECTOR, path_from_data
+from OceanParkBot.src.config.path import DATA_CLEANED, DATA_VECTOR
 
 def load_cleaned_data(path=None):
     """Load dữ liệu đã clean."""
@@ -19,7 +19,7 @@ def save_embedding_data(embeddings, metadata, out_path=None):
     import pickle
     if out_path is None:
         out_path = os.path.join(DATA_VECTOR, "embeddings.pkl")
-        
+
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
     with open(out_path, "wb") as f:
@@ -29,8 +29,8 @@ def save_embedding_data(embeddings, metadata, out_path=None):
 
 
 def generate_embeddings():
-    print("Loading MiniLM model...")
-    model = load_embedding_model()
+    print("Loading PhoBERT model...")
+    model = load_embedding_model()   # PhoBERTEmbedder()
 
     print("Loading cleaned listings...")
     listings = load_cleaned_data()
@@ -42,6 +42,8 @@ def generate_embeddings():
 
     for item in listings:
         text = item["text_for_embedding"]
+
+        # Encode bằng PhoBERT embedder (model.encode)
         vector = model.encode(text)
 
         embeddings.append(vector)
@@ -49,10 +51,10 @@ def generate_embeddings():
 
     embeddings = np.array(embeddings)
 
-    # Lưu outputs
+    # Lưu output
     save_embedding_data(embeddings, metadata)
 
-    print("DONE generating embeddings!")
+    print("DONE generating embeddings with PhoBERT!")
 
 
 if __name__ == "__main__":

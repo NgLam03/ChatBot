@@ -1,53 +1,83 @@
-Cấu trúc thư mục của: C:\Users\Admin\Documents\NLP\ChatBot\OceanParkBot
+Cấu trúc thư mục của: C:\Users\letru\Documents\All_file\NLP\ChatBot\OceanParkBot
 
 ├── __init__.py
 ├── __pycache__
-│   └── __init__.cpython-312.pyc
+│   ├── __init__.cpython-310.pyc
+│   ├── __init__.cpython-311.pyc
+│   └── main.cpython-310.pyc
 ├── assets
 │   └── images
-│       ├── A1244
-|       |....
+|   |...
 ├── data
 │   ├── cleaned
 │   │   └── listings_clean.json
 │   ├── faiss_index.bin
+│   ├── faiss_index.bin_meta.pkl
 │   ├── raw
 │   │   └── listings_raw.json
 │   └── vector_store
+│       └── embeddings.pkl
 ├── main.py
 └── src
     ├── __init__.py
     ├── __pycache__
-    │   └── __init__.cpython-312.pyc
+    │   ├── __init__.cpython-310.pyc
+    │   └── __init__.cpython-311.pyc
     ├── cleaning
     │   ├── __init__.py
-    │   ├── __pycache__
-    │   │   ├── __init__.cpython-312.pyc
-    │   │   ├── clean_pipeline.cpython-312.pyc
-    │   │   ├── normalize_price.cpython-312.pyc
-    │   │   └── normalize_type.cpython-312.pyc
     │   ├── clean_pipeline.py
     │   ├── normalize_price.py
     │   ├── normalize_text.py
     │   └── normalize_type.py
+    ├── config
+    │   ├── __pycache__
+    │   │   └── path.cpython-310.pyc
+    │   └── path.py
     ├── embedding
     │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-310.pyc
+    │   │   ├── __init__.cpython-311.pyc
+    │   │   ├── embed_model.cpython-310.pyc
+    │   │   ├── embed_model.cpython-311.pyc
+    │   │   ├── generate_embedding.cpython-310.pyc
+    │   │   └── generate_embedding.cpython-311.pyc
     │   ├── batch_embed.py
     │   ├── embed_model.py
     │   └── generate_embedding.py
     ├── llm
     │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-310.pyc
+    │   │   ├── extract_request.cpython-310.pyc
+    │   │   ├── extract_request_rb-regex.cpython-310.pyc
+    │   │   ├── extract_request_rule-regex.cpython-310.pyc
+    │   │   └── extract_request_rule_regex.cpython-310.pyc
     │   ├── extract_request.py
+    │   ├── extract_request_rule_regex.py
     │   └── llm_client.py
     ├── response
-    │   └── __init__.py
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-310.pyc
+    │   │   └── response_text.cpython-310.pyc
+    │   ├── response_text.py
+    │   └── response_with_images.py
     ├── response_text.py
     ├── response_with_images.py
     ├── search
     │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-310.pyc
+    │   │   ├── rule_filter.cpython-310.pyc
+    │   │   ├── search_pipeline.cpython-310.pyc
+    │   │   └── semantic_search.cpython-310.pyc
     │   ├── rule_filter.py
     │   ├── search_pipeline.py
     │   └── semantic_search.py
     └── vectordb
         ├── __init__.py
+        ├── __pycache__
+        │   ├── __init__.cpython-310.pyc
+        │   └── faiss_db.cpython-310.pyc
         └── faiss_db.py

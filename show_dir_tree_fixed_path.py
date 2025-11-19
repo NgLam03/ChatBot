@@ -17,7 +17,7 @@ def build_tree(startpath, indent=""):
 
 if __name__ == "__main__":
     # 🔧 CHỈNH SỬA ĐƯỜNG DẪN Ở ĐÂY
-    folder_path = r"C:\Users\Admin\Documents\NLP\ChatBot\OceanParkBot"
+    folder_path = r"C:\Users\letru\Documents\All_file\NLP\ChatBot\OceanParkBot"
 
     if not os.path.isdir(folder_path):
         print("❌ Thư mục không tồn tại!")

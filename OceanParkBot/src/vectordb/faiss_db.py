@@ -7,16 +7,12 @@ from OceanParkBot.src.config.path import DATA_VECTOR, DATA_DIR
 
 
 class FaissDB:
-    def __init__(self, dim=384, index_name="faiss_index.bin"):
+    def __init__(self, dim=768, index_name="faiss_index.bin"):
         """
-        dim: kích thước vector (MiniLM = 384)
-        index_name: tên file index
+        dim: kích thước vector (PhoBERT-base = 768)
         """
 
-        # Đường dẫn file FAISS index
         self.index_path = os.path.join(DATA_DIR, index_name)
-
-        # File metadata
         self.meta_path = self.index_path + "_meta.pkl"
 
         self.dim = dim
@@ -95,6 +91,6 @@ class FaissDB:
 
 
 if __name__ == "__main__":
-    #build index
-    db = FaissDB(dim=384)
-    db.build()  #load embeddings từ DATA_VECTOR/embeddings.pkl
+    # Build index PHOBERT (768)
+    db = FaissDB(dim=768)
+    db.build()  # load embeddings từ DATA_VECTOR/embeddings.pkl
