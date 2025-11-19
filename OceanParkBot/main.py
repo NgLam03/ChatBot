@@ -113,6 +113,12 @@ def main():
             if "view" in last_filter:
                 filtered = [x for x in filtered if x.get("view") == last_filter["view"]]
 
+            if "bedrooms" in rules:
+                last_filter = {"bedrooms": rules["bedrooms"]}
+
+            if "bathrooms" in rules:
+                last_filter["bathrooms"] = rules["bathrooms"]
+
             results = filtered[:5]  # lấy 5 căn
 
             print("\nBot:")

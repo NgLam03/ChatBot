@@ -1,7 +1,5 @@
 import re
 
-import re
-
 def extract_request(query: str):
     q = query.lower().strip()
 
@@ -12,26 +10,51 @@ def extract_request(query: str):
         return {"intent": "greeting"}
 
     # ===============================
-    # COUNT BY BEDROOM + BATHROOM
+    # SHOW EXAMPLES (phải ưu tiên)
     # ===============================
-    # Ví dụ: "bao nhiêu căn 1 ngủ 1 vệ sinh"
-    combo = re.search(r"(\d+)\s*(ngủ|pn).*(\d+)\s*(vệ sinh|vs|wc)", q)
+    show_patterns = [
+        "xem", "xem đi", "cho xem", "cho mình xem",
+        "xem vài căn", "xem qua vài căn", "cho xem vài căn",
+        "xem căn", "xem những căn", "cho mình xem vài căn"
+    ]
+    if any(p in q for p in show_patterns):
+        # kiểm tra có số phòng ngủ kèm theo
+        bed = re.search(r"(\d+)\s*(ngủ|pn|phòng ngủ)", q)
+        bath = re.search(r"(\d+)\s*(vệ sinh|vs|wc)", q)
+
+        rules = {"intent": "show_examples"}
+
+        if bed:
+            rules["bedrooms"] = int(bed.group(1))
+        if bath:
+            rules["bathrooms"] = int(bath.group(1))
+
+        return rules
+
+    # ===============================
+    # COUNT BED + BATH (ưu tiên)
+    # ===============================
+    combo = re.search(r"(\d+)\s*ngủ.*(\d+)\s*(vệ sinh|vs|wc)", q)
     if combo:
         return {
             "intent": "count_by_bedbath",
             "bedrooms": int(combo.group(1)),
-            "bathrooms": int(combo.group(3))
+            "bathrooms": int(combo.group(2))
         }
 
-    # Ví dụ: "có bao nhiêu căn 2 ngủ", "bao nhiêu căn 1 phòng ngủ"
-    bed = re.search(r"(\d+)\s*(ngủ|phòng ngủ|pn)", q)
+    # ===============================
+    # COUNT BEDROOM
+    # ===============================
+    bed = re.search(r"(\d+)\s*(ngủ|pn|phòng ngủ)", q)
     if bed:
         return {
             "intent": "count_by_bedroom",
             "bedrooms": int(bed.group(1))
         }
 
-    # Ví dụ: "bao nhiêu căn 1 wc"
+    # ===============================
+    # COUNT BATHROOM
+    # ===============================
     bath = re.search(r"(\d+)\s*(vệ sinh|vs|wc)", q)
     if bath:
         return {
@@ -40,7 +63,7 @@ def extract_request(query: str):
         }
 
     # ===============================
-    # COUNT BY VIEW
+    # COUNT VIEW
     # ===============================
     if "nội khu" in q:
         return {"intent": "count_by_view", "view": "Nội khu"}
@@ -52,20 +75,10 @@ def extract_request(query: str):
     # ===============================
     # COUNT ALL
     # ===============================
-    # Đặt SAU tất cả count_by_* để không override
     if "bao nhiêu căn" in q or "tổng số căn" in q or "tất cả căn" in q:
         return {"intent": "count_all"}
-
-    # ===============================
-    # CHEAPEST / EXPENSIVE
-    # ===============================
-    if "rẻ nhất" in q:
-        return {"intent": "cheapest"}
-    if "đắt nhất" in q:
-        return {"intent": "expensive"}
 
     # ===============================
     # FALLBACK → SEARCH
     # ===============================
     return {"intent": "search", "query": q}
-
