@@ -1,0 +1,53 @@
+Cấu trúc thư mục của: C:\Users\Admin\Documents\NLP\ChatBot\OceanParkBot
+
+├── __init__.py
+├── __pycache__
+│   └── __init__.cpython-312.pyc
+├── assets
+│   └── images
+│       ├── A1244
+|       |....
+├── data
+│   ├── cleaned
+│   │   └── listings_clean.json
+│   ├── faiss_index.bin
+│   ├── raw
+│   │   └── listings_raw.json
+│   └── vector_store
+├── main.py
+└── src
+    ├── __init__.py
+    ├── __pycache__
+    │   └── __init__.cpython-312.pyc
+    ├── cleaning
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-312.pyc
+    │   │   ├── clean_pipeline.cpython-312.pyc
+    │   │   ├── normalize_price.cpython-312.pyc
+    │   │   └── normalize_type.cpython-312.pyc
+    │   ├── clean_pipeline.py
+    │   ├── normalize_price.py
+    │   ├── normalize_text.py
+    │   └── normalize_type.py
+    ├── embedding
+    │   ├── __init__.py
+    │   ├── batch_embed.py
+    │   ├── embed_model.py
+    │   └── generate_embedding.py
+    ├── llm
+    │   ├── __init__.py
+    │   ├── extract_request.py
+    │   └── llm_client.py
+    ├── response
+    │   └── __init__.py
+    ├── response_text.py
+    ├── response_with_images.py
+    ├── search
+    │   ├── __init__.py
+    │   ├── rule_filter.py
+    │   ├── search_pipeline.py
+    │   └── semantic_search.py
+    └── vectordb
+        ├── __init__.py
+        └── faiss_db.py
