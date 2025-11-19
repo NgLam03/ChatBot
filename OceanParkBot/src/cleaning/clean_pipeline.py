@@ -5,6 +5,7 @@ from .normalize_price import normalize_price
 from .normalize_type import normalize_type
 from .normalize_text import build_text_for_embedding
 
+from OceanParkBot.src.config.path import DATA_RAW, DATA_CLEANED
 
 def clean_item(raw):
     """
@@ -75,16 +76,18 @@ def clean_item(raw):
 
 
 
-def run_clean_pipeline(
-    raw_path="C:/Users/Admin/Documents/NLP/ChatBot/OceanParkBot/data/raw/listings_raw.json",
-    out_path="C:/Users/Admin/Documents/NLP/ChatBot/OceanParkBot/data/cleaned/listings_clean.json"
-):
+def run_clean_pipeline(raw_path=None,out_path=None):
     """
     Chạy pipeline:
     - đọc raw json
     - clean từng item
     - ghi ra listings_clean.json
     """
+    if raw_path is None:
+        raw_path = os.path.join(DATA_RAW, "listings_raw.json")
+
+    if out_path is None:
+        out_path = os.path.join(DATA_CLEANED, "listings_clean.json")
     print(">>> Loading raw data...")
     with open(raw_path, "r", encoding="utf-8") as f:
         raw_data = json.load(f)
