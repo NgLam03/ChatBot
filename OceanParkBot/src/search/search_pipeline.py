@@ -14,6 +14,7 @@ class SearchPipeline:
 
         # Init FAISS searcher
         self.searcher = SemanticSearch()
+        self.metadata = self.searcher.metadata
 
     def run(self, query: str):
         """
