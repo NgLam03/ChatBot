@@ -4,12 +4,41 @@ import re
 def extract_request(query: str):
     """
     Phân tích câu hỏi user bằng rule + regex.
-    Không dùng LLM.
+    Đã thêm Intent Detection để ngăn bot trả nhà bừa.
     """
 
-    q = query.lower()
+    q = query.lower().strip()
+
+    # ==========================
+    # 1) INTENT DETECTION
+    # ==========================
+
+    # ---- intent: greeting ----
+    greetings = ["hi", "hello", "chào", "alo", "hey", "xin chào"]
+    if q in greetings:
+        return {"intent": "greeting"}
+
+    # ---- intent: câu không có từ khóa BĐS ----
+    # bộ từ khóa gợi ý user đang muốn tìm nhà
+    bds_keywords = [
+        "ngủ", "n ngủ", "phòng", "vs", "wc",
+        "full", "cơ bản", "cb", "giá", "tr", "triệu",
+        "toà", "s1", "s2", "s3", "s4",
+        "view", "vinuni", "nội khu", "hồ",
+        "studio", "st", "căn", "chung cư"
+    ]
+
+    if not any(k in q for k in bds_keywords):
+        return {"intent": "unknown"}   # không phải câu tìm nhà
+
+    # Nếu không rơi vào 2 intent trên → tiếp tục parse rule như bình thường
+
+    # ==========================
+    # 2) RULE-BASED PARSING
+    # ==========================
 
     result = {
+        "intent": "search",         # thêm intent
         "bedrooms": None,
         "bathrooms": None,
         "furniture": None,
@@ -35,12 +64,31 @@ def extract_request(query: str):
         result["bathrooms"] = 1
 
     # ===== FURNITURE =====
-    if "full đồ" in q or "full nt" in q or "đầy đủ nội thất" in q:
+    if "full đồ" in q or "full nt" in q or "đầy đủ nội thất" in q or "full nội thất" in q:
         result["furniture"] = "full"
     if "cơ bản" in q or "cb" in q:
         result["furniture"] = "co_ban"
     if "trống" in q or "không nội thất" in q:
         result["furniture"] = "none"
+
+    if "tổng" in q and "có bao" in q:
+        return {"intent": "count_all"}
+
+    if "bao nhiêu căn 2 ngủ" in q:
+        return {"intent": "count_bedrooms", "bedrooms": 2}
+
+    if "rẻ nhất" in q:
+        return {"intent": "cheapest"}
+
+    if "đắt nhất" in q:
+        return {"intent": "expensive"}
+
+    if "view vinuni" in q:
+        return {"intent": "search_by_view", "view": "VinUni"}
+
+    if "bạn tên gì" in q:
+        return {"intent": "chitchat_name"}
+
 
     # ===== PRICE RANGE =====
 
@@ -87,5 +135,6 @@ def extract_request(query: str):
 
 
 if __name__ == "__main__":
-    q = "tìm căn 2 ngủ full đồ dưới 9tr view VinUni"
-    print(extract_request(q))
+    print(extract_request("hi"))
+    print(extract_request("alo alo"))
+    print(extract_request("tìm căn 2 ngủ full đồ dưới 9tr view VinUni"))
