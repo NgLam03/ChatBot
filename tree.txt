@@ -1,0 +1,33 @@
+OceanParkBot/
+├── data/
+│   ├── raw/
+│   │   └── listings_raw.json
+│   ├── cleaned/
+│   │   └── listings_clean.json
+│   └── vector_store/
+│       └── faiss_index.bin
+├── assets/
+│   └── images/
+├── src/
+│   ├── cleaning/
+│   │   ├── normalize_price.py
+│   │   ├── normalize_type.py
+│   │   ├── normalize_text.py
+│   │   └── clean_pipeline.py
+│   ├── embedding/
+│   │   ├── embed_model.py
+│   │   ├── generate_embedding.py
+│   │   └── batch_embed.py
+│   ├── vectordb/
+│   │   └── faiss_db.py
+│   ├── llm/
+│   │   ├── extract_request.py
+│   │   └── llm_client.py
+│   ├── search/
+│   │   ├── semantic_search.py
+│   │   ├── rule_filter.py
+│   │   └── search_pipeline.py
+│   └── response/
+│       ├── response_text.py
+│       └── response_with_images.py
+└── main.py
