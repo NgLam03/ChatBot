@@ -1,6 +1,6 @@
-from llm.extract_request import extract_request
-from search.semantic_search import SemanticSearch
-from search.rule_filter import rule_filter
+from ..llm.extract_request_rule_regex import extract_request
+from .semantic_search import SemanticSearch
+from .rule_filter import rule_filter
 
 
 class SearchPipeline:

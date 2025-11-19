@@ -4,23 +4,26 @@ from .src.response.response_text import format_result_text
 
 def main():
     print("=== OceanParkBot Chatbot ===")
+    print("Gõ 'exit' để thoát.\n")
+
     pipeline = SearchPipeline()
 
     while True:
-        query = input("\nBạn: ")
+        query = input("Bạn: ")
 
-        if query.lower() in ["exit", "quit"]:
-            print("Tạm biệt!")
+        if query.lower().strip() in ["exit", "quit"]:
+            print("Bot: Tạm biệt!")
             break
 
+        # chạy pipeline tìm kiếm
         results = pipeline.run(query)
 
-        if not results:
-            print("Bot: Không tìm thấy căn nào phù hợp.")
-            continue
+        # format kết quả
+        response = format_result_text(results)
 
         print("\nBot:")
-        print(format_result_text(results))
+        print(response)
+        print("\n" + "-"*50 + "\n")
 
 
 if __name__ == "__main__":
