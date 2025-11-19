@@ -48,8 +48,8 @@ def create_folders_from_tree(tree_file, base_path):
 
 if __name__ == "__main__":
     # 🔧 Đường dẫn file tree và thư mục gốc cần tạo
-    tree_file = r"C:\Users\Admin\Documents\NLP\ChatBot\tree.txt"
-    base_output = r"C:\Users\Admin\Documents\NLP\ChatBot"
+    tree_file = r"D:\Xu_Ly_Ngon_Ngu_Tu_Nhien\ChatBoT\ChatBot\tree.txt"
+    base_output = r"D:\Xu_Ly_Ngon_Ngu_Tu_Nhien\ChatBoT\ChatBot"
 
     os.makedirs(base_output, exist_ok=True)
     created = create_folders_from_tree(tree_file, base_output)
