@@ -95,7 +95,7 @@ def main():
         if intent == "show_examples":
             if last_filter is None:
                 # Không có ngữ cảnh → fallback semantic search
-                results = pipeline.search("căn hộ", top_k=5)
+                results = pipeline.searcher.search("căn hộ", top_k=5)
                 print("\nBot:")
                 print(format_result_text(results))
                 print("\n" + "-"*50 + "\n")
@@ -123,7 +123,7 @@ def main():
         # ---------------------------
         # FALLBACK → SEMANTIC SEARCH
         # ---------------------------
-        results = pipeline.search(query, top_k=5)
+        results = pipeline.searcher.search(query, top_k=5)
 
         print("\nBot:")
         print(format_result_text(results))
