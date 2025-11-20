@@ -1,6 +1,6 @@
 from OceanParkBot.src.search.search_pipeline import SearchPipeline
 from OceanParkBot.src.response.response_text import format_result_text
-from OceanParkBot.src.llm.extract_request_rule_regex import extract_request
+from OceanParkBot.src.llm.extract_request_rule_regex_nltk import extract_request
 
 # ----- BIẾN LƯU NGỮ CẢNH -----
 last_filter = None

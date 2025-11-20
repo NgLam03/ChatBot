@@ -1,4 +1,4 @@
-from ..llm.extract_request_rule_regex import extract_request
+from ..llm.extract_request_rule_regex_nltk import extract_request
 from .semantic_search import SemanticSearch
 from .rule_filter import rule_filter
 import re
