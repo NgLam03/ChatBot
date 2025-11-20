@@ -23,8 +23,13 @@ VI_STOP.update([
 
 def normalize_query(q: str):
     q = q.lower().strip()
-    tokens = nltk.word_tokenize(q)
-    tokens = [t for t in tokens if t not in VI_STOP]
+
+    # thay word_tokenize = tokenize bằng split đơn giản
+    raw_tokens = re.split(r"[ ,.;:!?()\-\n\t]+", q)
+
+    # remove stopwords
+    tokens = [t for t in raw_tokens if t and t not in VI_STOP]
+
     return tokens, " ".join(tokens)
 
 
